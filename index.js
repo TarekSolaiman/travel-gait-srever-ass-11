@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const express = require("express");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
@@ -26,6 +26,31 @@ async function run() {
   try {
     // make db for services
     const serviceDB = client.db("travelGait").collection("allServices");
+
+    // create services data in db
+    app.post("/service", async (req, res) => {
+      const service = req.body;
+      const result = await serviceDB.insertOne(service);
+      res.send({ message: "successfully add" });
+    });
+
+    // read allservices data from db
+    app.get("/services", async (req, res) => {
+      const alldata = {};
+      const size = parseInt(req.query.size);
+      const services = serviceDB.find(alldata);
+      const result = await services.limit(size).toArray();
+      res.send(result);
+    });
+
+    // read one data from db with id
+    app.get("/oneservice/:id", async (req, res) => {
+      const id = req.params.id;
+      console.log(id);
+      const query = { _id: ObjectId(id) };
+      const result = await serviceDB.findOne(query);
+      res.send(result);
+    });
   } finally {
   }
 }
