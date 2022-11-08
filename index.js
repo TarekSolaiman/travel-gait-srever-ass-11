@@ -22,6 +22,16 @@ const client = new MongoClient(uri, {
   serverApi: ServerApiVersion.v1,
 });
 
+async function run() {
+  try {
+    // make db for services
+    const serviceDB = client.db("travelGait").collection("allServices");
+  } finally {
+  }
+}
+
+run().catch((e) => console.log(e.message));
+
 // test server
 app.listen(port, () => {
   console.log(`TRAVEL GAIT server is runnin port : ${port}`);
