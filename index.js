@@ -26,6 +26,8 @@ async function run() {
   try {
     // make db for services
     const serviceDB = client.db("travelGait").collection("allServices");
+    // make db for reviow
+    const reviowDB = client.db("travelGait").collection("reviow");
 
     // create services data in db
     app.post("/service", async (req, res) => {
@@ -46,10 +48,36 @@ async function run() {
     // read one data from db with id
     app.get("/oneservice/:id", async (req, res) => {
       const id = req.params.id;
-      console.log(id);
       const query = { _id: ObjectId(id) };
       const result = await serviceDB.findOne(query);
       res.send(result);
+    });
+
+    // create reviow data id reviowDB
+    app.post("/reviow", async (req, res) => {
+      const sendReviow = req.body;
+      console.log(sendReviow);
+      const reviowResult = await reviowDB.insertOne(sendReviow);
+      res.send({ message: "Success full reviow" });
+    });
+
+    // read data in db with id
+    app.get("/reviows/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { itemId: id };
+      const result = reviowDB.find(query);
+      const allReviows = await result.toArray();
+      res.send(allReviows);
+      console.log(allReviows);
+    });
+
+    // read data in db with email
+    app.get("/allreviows", async (req, res) => {
+      const email = req.query.email;
+      const query = { email: email };
+      const result = reviowDB.find(query);
+      const allReviows = await result.toArray();
+      res.send(allReviows);
     });
   } finally {
   }
