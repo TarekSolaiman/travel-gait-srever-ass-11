@@ -61,17 +61,17 @@ async function run() {
       res.send({ message: "Success full reviow" });
     });
 
-    // read data in db with id
+    // read alldata in db with id
     app.get("/reviows/:id", async (req, res) => {
       const id = req.params.id;
       const query = { itemId: id };
       const result = reviowDB.find(query);
       const allReviows = await result.toArray();
       res.send(allReviows);
-      console.log(allReviows);
+      // console.log(allReviows);
     });
 
-    // read data in db with email
+    // read alldata in db with email
     app.get("/allreviows", async (req, res) => {
       const email = req.query.email;
       const query = { email: email };
@@ -89,19 +89,30 @@ async function run() {
       res.send({ message: "success fuly deleted" });
     });
 
+    // read a data in db with id
+    app.get("/onereviow/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await reviowDB.findOne(query);
+      res.send(result);
+      // console.log(result);
+    });
+
     //Update reviow id db with id
     app.patch("/upreviow/:id", async (req, res) => {
       const id = req.params.id;
-      const newData = req.body;
-      console.log(id, newData);
-      // const query = {_id:ObjectId(id)}
-      // const updateDoc={
-      //   $set:{
-      //     reviow:newData
-      //   }
-      // }
-      // const result = await reviowDB.updateOne(query,updateDoc)
-      // res.send({message:'success fuly update'})
+      const { reviow, rating } = req.body;
+      console.log(reviow);
+      const query = { _id: ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          reviow: reviow,
+          rating: rating,
+        },
+      };
+      const options = { upsert: true };
+      const result = await reviowDB.updateOne(query, updateDoc, options);
+      res.send({ message: "success fuly update" });
     });
   } finally {
   }
