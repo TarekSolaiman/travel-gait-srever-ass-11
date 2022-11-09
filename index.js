@@ -88,6 +88,21 @@ async function run() {
       const result = await reviowDB.deleteOne(query);
       res.send({ message: "success fuly deleted" });
     });
+
+    //Update reviow id db with id
+    app.patch("/upreviow/:id", async (req, res) => {
+      const id = req.params.id;
+      const newData = req.body;
+      console.log(id, newData);
+      // const query = {_id:ObjectId(id)}
+      // const updateDoc={
+      //   $set:{
+      //     reviow:newData
+      //   }
+      // }
+      // const result = await reviowDB.updateOne(query,updateDoc)
+      // res.send({message:'success fuly update'})
+    });
   } finally {
   }
 }
