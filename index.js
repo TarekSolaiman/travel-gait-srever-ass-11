@@ -56,7 +56,6 @@ async function run() {
     // create reviow data id reviowDB
     app.post("/reviow", async (req, res) => {
       const sendReviow = req.body;
-      console.log(sendReviow);
       const reviowResult = await reviowDB.insertOne(sendReviow);
       res.send({ message: "Success full reviow" });
     });
