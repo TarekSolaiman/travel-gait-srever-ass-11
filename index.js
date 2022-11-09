@@ -79,6 +79,15 @@ async function run() {
       const allReviows = await result.toArray();
       res.send(allReviows);
     });
+
+    //Delete data in db with id
+    app.delete("/reviowdlt/:id", async (req, res) => {
+      const id = req.params.id;
+      console.log(id);
+      const query = { _id: ObjectId(id) };
+      const result = await reviowDB.deleteOne(query);
+      res.send({ message: "success fuly deleted" });
+    });
   } finally {
   }
 }
