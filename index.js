@@ -81,7 +81,9 @@ async function run() {
     // create reviow data id reviowDB
     app.post("/reviow", async (req, res) => {
       const sendReviow = req.body;
-      const reviowResult = await reviowDB.insertOne(sendReviow);
+      const query = { ...sendReviow, date: new Date() };
+      // console.log(query);
+      const reviowResult = await reviowDB.insertOne(query);
       res.send({ message: "Success full reviow" });
     });
 
@@ -135,7 +137,7 @@ async function run() {
     app.patch("/upreviow/:id", async (req, res) => {
       const id = req.params.id;
       const { reviow, rating } = req.body;
-      console.log(reviow);
+      // console.log(reviow);
       const query = { _id: ObjectId(id) };
       const updateDoc = {
         $set: {
